@@ -1,9 +1,13 @@
 <resources>
     <string name="app_name">GeoQuiz</string>
-    <string name="question_text">What is the cybersecurity?</string>
-    <bool name="answer">true</bool>
+    <string name="question_text"> </string>
     <string name="true_button">True</string>
     <string name="false_button">False</string>
+    <string name ="next_button">Next</string>
     <string name="correct_toast">Correct</string>
     <string name="incorrect_toast">Incorrect</string>
+
+    <string name="question1">Dark themes are the best</string>
+    <string name="question2">Spaces are superior to tabs</string>
+    <string name="question3">HTML is a programing language</string>
 </resources>

@@ -12,69 +12,65 @@ public class QuizActivity extends AppCompatActivity {
 
     private Button nTrueButton;
     private Button nFalseButton;
+    private Button nNextButton;
     private TextView nQuestion;
-    int questionNum;
-    String[] questions;
-    boolean[] answers;
+
+    private int questionNum = -1;
+    Question[] mQuestionBank = new Question[] {
+            new Question(R.string.question1, true),
+            new Question(R.string.question2, false),
+            new Question(R.string.question3, false)
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
 
-        setQuestions();
         getQuestion();
 
         nTrueButton = findViewById(R.id.true_button);
         nTrueButton.setOnClickListener(new View.OnClickListener(){
-            //add toast
-
             @Override
             public void onClick(View v) {
                 trueClick();
             }
         });
+
         nFalseButton = findViewById(R.id.false_button);
         nFalseButton.setOnClickListener(new View.OnClickListener(){
-            //add toast
-
             @Override
             public void onClick(View v) {
-                Toast.makeText(QuizActivity.this, R.string.incorrect_toast, Toast.LENGTH_SHORT).show();
                 falseClick();
+            }
+        });
+
+        nNextButton = findViewById(R.id.next_button);
+        nNextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getQuestion();
             }
         });
     }
 
-    public void setQuestions() {
-        questions = new String[3];
-        answers = new boolean[3];
-
-        questions[0] = "What is the cyber security?";
-        answers[0] = true;
-
-        questions[1] = "Spaces are superior to tabs";
-        answers[1] = false;
-
-        questions[2] = "Dark themes are the best";
-        answers[2] = true;
-    }
-
     public void getQuestion() {
         Random rand = new Random();
-        int max = questions.length - 1;
+        int max = mQuestionBank.length;
         int holdQuestionNum = rand.nextInt(max);
+
         while(holdQuestionNum == questionNum) {
             holdQuestionNum = rand.nextInt(max);
         }
         questionNum = holdQuestionNum;
 
-        nQuestion = findViewById(R.id.question);
-        nQuestion.setText(questions[questionNum]);
+
+        nQuestion = findViewById(R.id.question_text_view);
+        nQuestion.setText(mQuestionBank[questionNum].getTextResId());
     }
 
     public void trueClick() {
-        if (answers[questionNum] == true) {
+        if (mQuestionBank[questionNum].isAnswerTrue() == true) {
             Toast.makeText(QuizActivity.this, R.string.correct_toast, Toast.LENGTH_SHORT).show();
             getQuestion();
         }
@@ -84,7 +80,7 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     public void falseClick() {
-        if (answers[questionNum] == false) {
+        if (mQuestionBank[questionNum].isAnswerTrue() == false) {
             Toast.makeText(QuizActivity.this, R.string.correct_toast, Toast.LENGTH_SHORT).show();
             getQuestion();
         }
