@@ -13,9 +13,12 @@ public class QuizActivity extends AppCompatActivity {
     private Button nTrueButton;
     private Button nFalseButton;
     private Button nNextButton;
+    private Button nPrevButton;
+
     private TextView nQuestion;
 
     private int questionNum = -1;
+    private int lastQuestionNum = 0;
     Question[] mQuestionBank = new Question[] {
             new Question(R.string.question1, true),
             new Question(R.string.question2, false),
@@ -28,6 +31,14 @@ public class QuizActivity extends AppCompatActivity {
         setContentView(R.layout.activity_quiz);
 
         getQuestion();
+
+        nQuestion = findViewById(R.id.question_text_view);
+        nQuestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getQuestion();
+            }
+        });
 
         nTrueButton = findViewById(R.id.true_button);
         nTrueButton.setOnClickListener(new View.OnClickListener(){
@@ -52,6 +63,14 @@ public class QuizActivity extends AppCompatActivity {
                 getQuestion();
             }
         });
+
+        nPrevButton = findViewById(R.id.prev_button);
+        nPrevButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPrevQuestion();
+            }
+        });
     }
 
     public void getQuestion() {
@@ -62,11 +81,19 @@ public class QuizActivity extends AppCompatActivity {
         while(holdQuestionNum == questionNum) {
             holdQuestionNum = rand.nextInt(max);
         }
+        lastQuestionNum = questionNum;
         questionNum = holdQuestionNum;
 
 
         nQuestion = findViewById(R.id.question_text_view);
         nQuestion.setText(mQuestionBank[questionNum].getTextResId());
+    }
+
+    public void getPrevQuestion() {
+        nQuestion = findViewById(R.id.question_text_view);
+        nQuestion.setText(mQuestionBank[lastQuestionNum].getTextResId());
+
+        questionNum = lastQuestionNum;
     }
 
     public void trueClick() {
