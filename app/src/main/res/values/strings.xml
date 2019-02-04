@@ -5,7 +5,7 @@
 
     <string name="true_button">True</string>
     <string name="false_button">False</string>
-    <string name ="next_button">Next</string>
+    <string name="next_button">Next</string>
     <string name="prev_button">Previous</string>
 
     <string name="correct_toast">Correct</string>
@@ -14,4 +14,10 @@
     <string name="question1">Dark themes are the best</string>
     <string name="question2">Spaces are superior to tabs</string>
     <string name="question3">HTML is a programing language</string>
+
+    <string name="warning_text">Are you sure you want to see the answer?</string>
+    <string name="show_answer_button">Show Answer</string>
+    <string name="cheat_button">Cheat</string>
+    <string name="judgement_toast">You cheated :(</string>
+
 </resources>

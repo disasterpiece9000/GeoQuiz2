@@ -1,12 +1,16 @@
 package com.example.geoquiz;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.EmptyStackException;
 import java.util.Random;
+import java.util.Stack;
 
 public class QuizActivity extends AppCompatActivity {
 
@@ -14,11 +18,13 @@ public class QuizActivity extends AppCompatActivity {
     private Button nFalseButton;
     private Button nNextButton;
     private Button nPrevButton;
+    private Button nCheatButton;
 
     private TextView nQuestion;
 
     private int questionNum = -1;
-    private int lastQuestionNum = 0;
+    private Stack<Integer> questionHistory = new Stack<Integer>();
+
     Question[] mQuestionBank = new Question[] {
             new Question(R.string.question1, true),
             new Question(R.string.question2, false),
@@ -71,6 +77,15 @@ public class QuizActivity extends AppCompatActivity {
                 getPrevQuestion();
             }
         });
+
+        nCheatButton = findViewById(R.id.cheat_button);
+        nCheatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(QuizActivity.this, CheatActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     public void getQuestion() {
@@ -81,9 +96,9 @@ public class QuizActivity extends AppCompatActivity {
         while(holdQuestionNum == questionNum) {
             holdQuestionNum = rand.nextInt(max);
         }
-        lastQuestionNum = questionNum;
-        questionNum = holdQuestionNum;
 
+        questionNum = holdQuestionNum;
+        questionHistory.push(questionNum);
 
         nQuestion = findViewById(R.id.question_text_view);
         nQuestion.setText(mQuestionBank[questionNum].getTextResId());
@@ -91,8 +106,16 @@ public class QuizActivity extends AppCompatActivity {
 
     public void getPrevQuestion() {
         nQuestion = findViewById(R.id.question_text_view);
-        nQuestion.setText(mQuestionBank[lastQuestionNum].getTextResId());
+        int lastQuestionNum;
 
+        try {
+            lastQuestionNum = questionHistory.pop();
+        }
+        catch (EmptyStackException e){
+            lastQuestionNum = questionNum;
+        }
+
+        nQuestion.setText(mQuestionBank[lastQuestionNum].getTextResId());
         questionNum = lastQuestionNum;
     }
 
